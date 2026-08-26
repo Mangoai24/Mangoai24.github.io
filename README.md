@@ -6,9 +6,9 @@
   <title>Garritas Nails - Agendamiento de Citas</title>
   <style>
     :root {
-      --pink-primary: #ff85a2;
+      --green-primary: #ff85a2;
       --pink-dark: #e05275;
-      --pink-light: #fff0f3;
+      --green-light: #fff0f3;
       --text-color: #4a4a4a;
       --card-bg: #ffffff;
     }
@@ -133,8 +133,8 @@
 
   <div class="container">
     <header>
-      <h1>🐾 Garritas Nails</h1>
-      <p>Reserva tu cita para Soft Gel o PressOn</p>
+      <h1>🐾Garritas Nails</h1>
+      <p>Reserva tu cita</p>
     </header>
 
     <div id="seccion-formulario">
