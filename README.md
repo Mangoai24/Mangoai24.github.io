@@ -1,236 +1,257 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Garritas Nails - Agendamiento de Citas</title>
+  <style>
+    :root {
+      --pink-primary: #ff85a2;
+      --pink-dark: #e05275;
+      --pink-light: #fff0f3;
+      --text-color: #4a4a4a;
+      --card-bg: #ffffff;
+    }
 
-<title>Garritas Nails por Ale 🐾</title>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    body {
+      background-color: var(--pink-light);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
 
-<style>
-:root{
-    --crema:#FAF7F2;
-    --crema-2:#F2EDE3;
-    --verde:#606C38;
-    --verde-oscuro:#283618;
-    --verde-suave:#89945F;
-    --blanco:#FFFFFF;
-    --plata:#C0C0C0;
-    --plata-claro:#E8E8E8;
-    --gris:#EFEFEF;
-    --texto:#333333;
-    --rojo:#B84A4A;
-    --amarillo:#C99A27;
-    --whatsapp:#25D366;
-}
+    .container {
+      width: 100%;
+      max-width: 600px;
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      padding: 24px;
+    }
 
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-    font-family:'Quicksand',sans-serif;
-}
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
 
-body{
-    min-height:100vh;
-    background:
-        radial-gradient(circle at 10% 10%,rgba(96,108,56,.07) 0 35px,transparent 36px),
-        radial-gradient(circle at 90% 85%,rgba(96,108,56,.06) 0 45px,transparent 46px),
-        var(--crema);
-    color:var(--texto);
-    padding:20px;
-}
+    header h1 {
+      color: var(--pink-dark);
+      font-size: 1.8rem;
+    }
 
-.container{
-    width:100%;
-    max-width:680px;
-    margin:auto;
-    background:var(--blanco);
-    border:2px solid var(--verde);
-    border-radius:24px;
-    overflow:hidden;
-    box-shadow:0 12px 35px rgba(40,54,24,.12);
-}
+    header p {
+      color: #777;
+      font-size: 0.95rem;
+    }
 
-header{
-    background:var(--verde);
-    color:white;
-    text-align:center;
-    padding:27px 20px;
-    border-bottom:4px solid var(--plata);
-}
+    .form-group {
+      margin-bottom: 20px;
+    }
 
-.logo-paw{
-    font-size:2rem;
-    margin-bottom:8px;
-}
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
 
-header h1{
-    font-size:1.35rem;
-    line-height:1.35;
-}
+    select, input[type="date"] {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #eee;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s;
+    }
 
-.subtitle{
-    margin-top:8px;
-    font-size:.82rem;
-    opacity:.9;
-}
+    select:focus, input[type="date"]:focus {
+      border-color: var(--pink-primary);
+    }
 
-.step{
-    display:none;
-    padding:25px;
-}
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
 
-.step.active{
-    display:block;
-}
+    .btn-primary {
+      background-color: var(--pink-primary);
+      color: white;
+    }
 
-h2{
-    color:var(--verde-oscuro);
-    font-size:1.18rem;
-    margin-bottom:17px;
-    padding-bottom:8px;
-    border-bottom:2px solid var(--verde);
-}
+    .btn-primary:hover {
+      background-color: var(--pink-dark);
+    }
 
-.section-title{
-    color:var(--verde-oscuro);
-    font-weight:700;
-    margin:18px 0 10px;
-}
+    .btn-danger {
+      background-color: #ff4d4d;
+      color: white;
+      margin-top: 10px;
+    }
 
-.service-list{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-}
+    .btn-danger:hover {
+      background-color: #cc0000;
+    }
 
-.service-btn{
-    width:100%;
-    border:2px solid var(--verde);
-    background:var(--crema);
-    color:var(--texto);
-    border-radius:50px;
-    padding:14px 19px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    cursor:pointer;
-    font-size:.95rem;
-    font-weight:600;
-    transition:.2s;
-}
+    .cita-card {
+      background-color: var(--pink-light);
+      border: 2px dashed var(--pink-primary);
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 20px;
+    }
 
-.service-btn:hover{
-    transform:translateY(-1px);
-    box-shadow:0 4px 12px rgba(96,108,56,.15);
-}
+    .cita-card h3 {
+      color: var(--pink-dark);
+      margin-bottom: 10px;
+    }
 
-.service-btn.selected{
-    background:var(--verde);
-    color:white;
-    border-color:var(--verde-oscuro);
-}
+    .cita-detalles p {
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+    }
 
-.service-left{
-    display:flex;
-    align-items:center;
-    gap:8px;
-}
+    .oculto {
+      display: none;
+    }
+  </style>
+</head>
+<body>
 
-.price{
-    font-weight:700;
-    white-space:nowrap;
-}
+  <div class="container">
+    <header>
+      <h1>💅 Garritas Nails</h1>
+      <p>Reserva tu cita para Soft Gel o PressOn</p>
+    </header>
 
-.info-box{
-    background:var(--crema-2);
-    border-left:4px solid var(--verde);
-    padding:12px 14px;
-    border-radius:10px;
-    margin:12px 0 18px;
-    font-size:.86rem;
-    line-height:1.45;
-}
+    <div id="seccion-formulario">
+      <form id="form-agendar">
+        <div class="form-group">
+          <label for="servicio">Servicio Especializado:</label>
+          <select id="servicio" required>
+            <option value="" disabled selected>Selecciona un servicio</option>
+            <option value="Soft Gel">Soft Gel (~4 hrs)</option>
+            <option value="PressOn">PressOn (~4 hrs)</option>
+          </select>
+        </div>
 
-.shapes{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:10px;
-    margin-bottom:20px;
-}
+        <div class="form-group">
+          <label for="fecha">Fecha de la Cita:</label>
+          <input type="date" id="fecha" required>
+        </div>
 
-.shape{
-    border:2px solid var(--verde);
-    background:var(--crema);
-    border-radius:16px;
-    padding:13px 5px;
-    text-align:center;
-    cursor:pointer;
-    transition:.2s;
-}
+        <div class="form-group">
+          <label for="horario">Horarios Disponibles (Bloques de 4 hrs):</label>
+          <select id="horario" required>
+            <option value="" disabled selected>Selecciona un horario</option>
+            <option value="09:00 AM - 01:00 PM">09:00 AM - 01:00 PM</option>
+            <option value="01:00 PM - 05:00 PM">01:00 PM - 05:00 PM</option>
+            <option value="02:00 PM - 06:00 PM">02:00 PM - 06:00 PM</option>
+          </select>
+        </div>
 
-.shape:hover{
-    box-shadow:0 4px 12px rgba(96,108,56,.15);
-}
+        <button type="submit" class="btn btn-primary">Confirmar y Agendar Cita</button>
+      </form>
+    </div>
 
-.shape.selected{
-    background:var(--verde);
-    color:white;
-}
+    <div id="seccion-cita" class="cita-card oculto">
+      <h3>📅 Tu Cita Agendada</h3>
+      <div class="cita-detalles">
+        <p><strong>Servicio:</strong> <span id="det-servicio"></span></p>
+        <p><strong>Fecha:</strong> <span id="det-fecha"></span></p>
+        <p><strong>Horario:</strong> <span id="det-horario"></span></p>
+        <p><strong>Estado:</strong> <span style="color: green; font-weight: bold;">Confirmada</span></p>
+      </div>
+      <button id="btn-cancelar" class="btn btn-danger">Cancelar Cita</button>
+    </div>
+  </div>
 
-.nail{
-    width:42px;
-    height:60px;
-    margin:0 auto 7px;
-}
+  <script>
+    // Referencias a elementos del DOM
+    const formAgendar = document.getElementById('form-agendar');
+    const inputFecha = document.getElementById('fecha');
+    const selectServicio = document.getElementById('servicio');
+    const selectHorario = document.getElementById('horario');
+    
+    const seccionFormulario = document.getElementById('seccion-formulario');
+    const seccionCita = document.getElementById('seccion-cita');
+    const btnCancelar = document.getElementById('btn-cancelar');
 
-.nail svg{
-    width:100%;
-    height:100%;
-    stroke:currentColor;
-    fill:none;
-    stroke-width:2.2;
-}
+    const detServicio = document.getElementById('det-servicio');
+    const detFecha = document.getElementById('det-fecha');
+    const detHorario = document.getElementById('det-horario');
 
-.shape-name{
-    font-size:.78rem;
-    font-weight:700;
-}
+    // Deshabilitar fechas pasadas en el input date
+    const hoy = new Date().toISOString().split('T')[0];
+    inputFecha.setAttribute('min', hoy);
 
-.extra-row{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    padding:11px 4px;
-    border-bottom:1px solid var(--gris);
-    font-size:.9rem;
-}
+    // Cargar cita al iniciar la página desde LocalStorage
+    document.addEventListener('DOMContentLoaded', cargarCita);
 
-.extra-row:last-child{
-    border-bottom:none;
-}
+    // Evento de submit del formulario
+    formAgendar.addEventListener('submit', function(e) {
+      e.preventDefault();
 
-.number-control{
-    width:58px;
-    padding:7px;
-    border:1px solid var(--verde);
-    border-radius:9px;
-    text-align:center;
-    background:white;
-}
+      const citaData = {
+        servicio: selectServicio.value,
+        fecha: inputFecha.value,
+        horario: selectHorario.value
+      };
 
-.checkbox{
-    width:18px;
-    height:18px;
-    accent-color:var(--verde);
-}
+      // Guardar en almacenamiento local
+      localStorage.setItem('cita_garritas', JSON.stringify(citaData));
+      
+      mostrarCita(citaData);
+      alert('¡Tu cita ha sido agendada con éxito!');
+    });
 
-.total{
-    margin:22px 0 15px;
-    padding:17px;
-    background:var(--verde-oscuro);
-    color:white;
-    border-radius:15px;
+    // Evento para cancelar la cita
+    btnCancelar.addEventListener('click', function() {
+      const confirmar = confirm('¿Estás segura de que deseas cancelar tu cita en Garritas Nails?');
+      if (confirmar) {
+        localStorage.removeItem('cita_garritas');
+        ocultarCita();
+        formAgendar.reset();
+        alert('Tu cita ha sido cancelada.');
+      }
+    });
+
+    // Función para mostrar los detalles de la cita
+    function mostrarCita(cita) {
+      detServicio.textContent = cita.servicio;
+      detFecha.textContent = cita.fecha;
+      detHorario.textContent = cita.horario;
+
+      seccionFormulario.classList.add('oculto');
+      seccionCita.classList.remove('oculto');
+    }
+
+    // Función para ocultar la cita y mostrar el formulario
+    function ocultarCita() {
+      seccionCita.classList.add('oculto');
+      seccionFormulario.classList.remove('oculto');
+    }
+
+    // Función para revisar si existe una cita agendada previamente
+    function cargarCita() {
+      const citaGuardada = localStorage.getItem('cita_garritas');
+      if (citaGuardada) {
+        mostrarCita(JSON.parse(citaGuardada));
+      }
+    }
+  </script>
+</body>
+</html>
