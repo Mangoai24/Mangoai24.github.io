@@ -3,374 +3,583 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Garritas Nails - Agendamiento de Citas</title>
+  <title>Garritas Nails - Reservas de Citas</title>
   <style>
     :root {
-      /* Paleta de colores verdes */
-      --green-dark: #1b4332;       /* Verde oscuro para encabezados y botones principales */
-      --green-light: #d8f3dc;      /* Verde claro para fondo general */
-      --green-pastel: #40916c;     /* Verde pastel oscuro para texto */
-      --green-pastel-light: #74c69d; /* Verde pastel suave para bordes/detalles */
-      --card-bg: #ffffff;
+      --green-dark: #1b4332;
+      --green-pastel: #40916c;
+      --green-light: #d8f3dc;
+      --green-soft: #b7e4c7;
+      --bg-color: #f4fbf7;
+      --white: #ffffff;
+      --danger: #d90429;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
 
     body {
-      background-color: var(--green-light);
-      color: var(--green-pastel);
-      display: flex;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 600px;
-      background: var(--card-bg);
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(27, 67, 50, 0.12);
-      padding: 24px;
-      border: 1px solid var(--green-pastel-light);
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    header h1 {
+      background-color: var(--bg-color);
       color: var(--green-dark);
-      font-size: 1.8rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    header p {
+    /* Navbar & Indicadores */
+    .navbar {
+      background-color: var(--green-dark);
+      color: var(--white);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .nav-brand {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+    .nav-steps {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .step-indicator {
+      font-size: 0.85rem;
+      opacity: 0.6;
+      padding: 0.3rem 0.6rem;
+      border-radius: 20px;
+    }
+
+    .step-indicator.active {
+      opacity: 1;
+      background-color: var(--green-pastel);
+      font-weight: bold;
+    }
+
+    /* Contenedor Principal */
+    .main-container {
+      max-width: 750px;
+      width: 90%;
+      margin: 2rem auto;
+      background: var(--white);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(27, 67, 50, 0.08);
+      border: 1px solid var(--green-soft);
+    }
+
+    /* Transiciones entre Secciones */
+    .section-step {
+      display: none;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    .section-step.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      color: var(--green-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-subtitle {
       color: var(--green-pastel);
+      margin-bottom: 1.5rem;
       font-size: 0.95rem;
     }
 
-    .form-group {
-      margin-bottom: 20px;
+    /* Tarjetas de Servicios (Sección 1) */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
     }
 
-    label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--green-pastel);
+    .service-card {
+      border: 2px solid var(--green-soft);
+      border-radius: 12px;
+      padding: 1.5rem;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
 
-    select, input[type="date"], input[type="file"] {
-      width: 100%;
-      padding: 12px;
-      border: 2px solid var(--green-pastel-light);
-      border-radius: 8px;
-      font-size: 1rem;
-      outline: none;
+    .service-card:hover, .service-card.selected {
+      border-color: var(--green-dark);
+      background-color: var(--green-light);
+    }
+
+    .service-card h3 {
       color: var(--green-dark);
-      background-color: #fbfffb;
-      transition: border-color 0.3s;
+      margin-bottom: 0.5rem;
     }
 
-    select:focus, input[type="date"]:focus, input[type="file"]:focus {
+    .service-card p {
+      color: var(--green-pastel);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--green-pastel);
+      color: var(--white);
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+    }
+
+    /* Calendario y Lapsos (Sección 2) */
+    .calendar-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    input[type="date"] {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid var(--green-soft);
+      border-radius: 8px;
+      outline: none;
+      font-size: 1rem;
+      color: var(--green-dark);
+      background-color: var(--bg-color);
+    }
+
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .slot-btn {
+      padding: 1rem;
+      border: 2px solid var(--green-soft);
+      background: var(--white);
+      color: var(--green-dark);
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.2s;
+    }
+
+    .slot-btn:hover, .slot-btn.selected {
+      background-color: var(--green-dark);
+      color: var(--white);
       border-color: var(--green-dark);
     }
 
-    .preview-container {
-      margin-top: 10px;
+    /* Upload de Imagen (Sección 3) */
+    .upload-area {
+      border: 2px dashed var(--green-pastel);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      background: var(--green-light);
+      cursor: pointer;
+    }
+
+    .upload-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .preview-wrapper img {
+      max-width: 100%;
+      max-height: 250px;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .btn-remove {
+      background: var(--danger);
+      color: white;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* Ticket (Sección 4) */
+    .ticket-card {
+      border: 2px dashed var(--green-pastel);
+      background: var(--green-light);
+      border-radius: 16px;
+      padding: 2rem;
+    }
+
+    .ticket-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--green-soft);
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .status-badge {
+      background: var(--green-dark);
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+    }
+
+    .ticket-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .ticket-img-box {
+      margin-top: 1.5rem;
       text-align: center;
     }
 
-    .preview-img {
+    .ticket-img-box img {
       max-width: 100%;
       max-height: 200px;
       border-radius: 8px;
-      border: 2px solid var(--green-pastel-light);
-      object-fit: cover;
+      margin-top: 0.5rem;
     }
 
-    .btn-group {
+    /* Botones de Navegación Generales */
+    .nav-buttons {
       display: flex;
-      gap: 10px;
-      margin-top: 10px;
+      gap: 1rem;
+      margin-top: 2rem;
     }
 
     .btn {
-      width: 100%;
-      padding: 14px;
-      border: none;
+      flex: 1;
+      padding: 0.8rem 1.2rem;
       border-radius: 8px;
-      font-size: 1rem;
+      border: none;
       font-weight: bold;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: opacity 0.2s;
     }
 
-    .btn-primary {
-      background-color: var(--green-dark);
-      color: #ffffff;
-    }
+    .btn-primary { background: var(--green-dark); color: white; }
+    .btn-secondary { background: var(--green-soft); color: var(--green-dark); }
+    .btn-outline { background: transparent; border: 2px solid var(--green-dark); color: var(--green-dark); }
+    .btn-danger { background: var(--danger); color: white; width: 100%; margin-top: 1rem; }
 
-    .btn-primary:hover {
-      background-color: var(--green-pastel);
-    }
-
-    .btn-secondary {
-      background-color: var(--green-pastel-light);
-      color: var(--green-dark);
-    }
-
-    .btn-secondary:hover {
-      background-color: var(--green-pastel);
-      color: white;
-    }
-
-    .btn-danger {
-      background-color: #d90429;
-      color: white;
-      margin-top: 15px;
-    }
-
-    .btn-danger:hover {
-      background-color: #a80320;
-    }
-
-    /* Estilos del Ticket */
-    .cita-card {
-      background-color: var(--green-light);
-      border: 2px dashed var(--green-pastel);
-      border-radius: 12px;
-      padding: 20px;
-      margin-top: 20px;
-    }
-
-    .cita-card h3 {
-      color: var(--green-dark);
-      margin-bottom: 12px;
-      text-align: center;
-      border-bottom: 1px solid var(--green-pastel-light);
-      padding-bottom: 8px;
-    }
-
-    .cita-detalles p {
-      margin-bottom: 8px;
-      font-size: 1rem;
-      color: var(--green-pastel);
-    }
-
-    .cita-detalles strong {
-      color: var(--green-dark);
-    }
-
-    .oculto {
-      display: none;
-    }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .oculto { display: none !important; }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <header>
-      <h1>🐾 Garritas Nails</h1>
-      <p>Reserva tu cita para Soft Gel o PressOn</p>
-    </header>
+  <!-- Navegación Principal -->
+  <nav class="navbar">
+    <div class="nav-brand">🐾 Garritas Nails</div>
+    <div class="nav-steps">
+      <span class="step-indicator active" data-step="1">1. Servicio</span>
+      <span class="step-indicator" data-step="2">2. Fecha y Hora</span>
+      <span class="step-indicator" data-step="3">3. Diseño</span>
+      <span class="step-indicator" data-step="4">4. Ticket</span>
+    </div>
+  </nav>
 
-    <!-- Formulario Principal -->
-    <div id="seccion-formulario">
-      <form id="form-agendar">
-        <div class="form-group">
-          <label for="servicio">Servicio Especializado:</label>
-          <select id="servicio" required>
-            <option value="" disabled selected>Selecciona un servicio</option>
-            <option value="Soft Gel">Soft Gel (~4 hrs)</option>
-            <option value="PressOn">PressOn (~4 hrs)</option>
-          </select>
+  <main class="main-container">
+
+    <!-- SECCIÓN 1: Selección de Servicio -->
+    <section id="step-1" class="section-step active">
+      <h2>Elige tu Servicio Especializado</h2>
+      <p class="section-subtitle">Técnicas profesionales de alta duración y cuidado de la uña.</p>
+
+      <div class="services-grid">
+        <div class="service-card" data-service="Soft Gel">
+          <div class="badge">~4 Horas</div>
+          <h3>Soft Gel</h3>
+          <p>Extensión ligera y resistente con tips de gel curados en lámpara LED.</p>
+          <button class="btn btn-primary">Seleccionar</button>
         </div>
 
+        <div class="service-card" data-service="PressOn">
+          <div class="badge">~4 Horas</div>
+          <h3>PressOn</h3>
+          <p>Aplicación y sellado profesional de sets reutilizables y personalizables.</p>
+          <button class="btn btn-primary">Seleccionar</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 2: Calendario e Intervalos de 4 Horas -->
+    <section id="step-2" class="section-step">
+      <h2>Selecciona Fecha y Horario</h2>
+      <p class="section-subtitle">Atención exclusiva en bloques de 4 horas (09:00 AM a 06:00 PM).</p>
+
+      <div class="calendar-container">
         <div class="form-group">
-          <label for="fecha">Fecha de la Cita:</label>
-          <input type="date" id="fecha" required>
+          <label for="date-picker">Fecha disponible:</label>
+          <input type="date" id="date-picker">
         </div>
 
-        <div class="form-group">
-          <label for="horario">Horarios Disponibles (Bloques de 4 hrs):</label>
-          <select id="horario" required>
-            <option value="" disabled selected>Selecciona un horario</option>
-            <option value="09:00 AM - 01:00 PM">09:00 AM - 01:00 PM</option>
-            <option value="01:00 PM - 05:00 PM">01:00 PM - 05:00 PM</option>
-            <option value="02:00 PM - 06:00 PM">02:00 PM - 06:00 PM</option>
-          </select>
+        <div class="slots-container">
+          <label>Horarios Disponibles:</label>
+          <div class="slots-grid">
+            <button class="slot-btn" data-time="09:00 AM - 01:00 PM">09:00 AM - 01:00 PM</button>
+            <button class="slot-btn" data-time="01:00 PM - 05:00 PM">01:00 PM - 05:00 PM</button>
+            <button class="slot-btn" data-time="02:00 PM - 06:00 PM">02:00 PM - 06:00 PM</button>
+          </div>
         </div>
+      </div>
 
-        <!-- Opción de Imagen de Referencia -->
-        <div class="form-group">
-          <label for="imagen-referencia">Imagen de Referencia (Opcional):</label>
-          <input type="file" id="imagen-referencia" accept="image/*">
-          <div id="preview-box" class="preview-container oculto">
-            <img id="img-preview" class="preview-img" alt="Vista previa de diseño">
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="app.prevStep()">Atrás</button>
+        <button class="btn btn-primary" id="btn-step-2-next" disabled onclick="app.nextStep()">Continuar</button>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 3: Imagen de Referencia (Opcional) -->
+    <section id="step-3" class="section-step">
+      <h2>¿Tienes alguna idea o diseño?</h2>
+      <p class="section-subtitle">Sube tu imagen de referencia para preparar los materiales de tu cita.</p>
+
+      <div class="upload-area" id="drop-zone">
+        <input type="file" id="file-input" accept="image/*" hidden>
+        <div id="upload-prompt">
+          <p class="upload-icon">📷</p>
+          <p>Arrastra aquí tu foto o <strong>haz clic para examinar</strong></p>
+        </div>
+        <div id="preview-wrapper" class="oculto">
+          <img id="image-preview" alt="Diseño de referencia">
+          <button class="btn-remove" id="btn-remove-img">Quitar imagen</button>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="app.prevStep()">Atrás</button>
+        <button class="btn btn-outline" onclick="app.skipImage()">Omitir y Confirmar</button>
+        <button class="btn btn-primary" onclick="app.confirmBooking()">Agendar Cita</button>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 4: Ticket Interactivo -->
+    <section id="step-4" class="section-step">
+      <div class="ticket-card">
+        <div class="ticket-header">
+          <h2>🎟️ Cita Confirmada</h2>
+          <span class="status-badge">Confirmado</span>
+        </div>
+        
+        <div class="ticket-body">
+          <div class="ticket-row">
+            <span>Servicio:</span>
+            <strong id="ticket-service">-</strong>
+          </div>
+          <div class="ticket-row">
+            <span>Fecha:</span>
+            <strong id="ticket-date">-</strong>
+          </div>
+          <div class="ticket-row">
+            <span>Horario:</span>
+            <strong id="ticket-time">-</strong>
+          </div>
+
+          <div id="ticket-img-container" class="ticket-img-box oculto">
+            <p><strong>Diseño de Referencia:</strong></p>
+            <img id="ticket-image" alt="Referencia cargada">
           </div>
         </div>
 
-        <!-- Botones de Acción -->
-        <div class="btn-group">
-          <button type="button" id="btn-omitir-imagen" class="btn btn-secondary">Omitir imagen y Agendar</button>
-          <button type="submit" class="btn btn-primary">Agendar Cita</button>
-        </div>
-      </form>
-    </div>
-
-    <!-- Ticket de Cita Confirmada -->
-    <div id="seccion-cita" class="cita-card oculto">
-      <h3>🎟️ Ticket de Cita Confirmada</h3>
-      <div class="cita-detalles">
-        <p><strong>Servicio:</strong> <span id="det-servicio"></span></p>
-        <p><strong>Fecha:</strong> <span id="det-fecha"></span></p>
-        <p><strong>Horario:</strong> <span id="det-horario"></span></p>
-        <p><strong>Estado:</strong> <span style="color: var(--green-dark); font-weight: bold;">Confirmada</span></p>
-        
-        <!-- Imagen en el Ticket si el usuario la agregó -->
-        <div id="det-imagen-box" class="preview-container oculto" style="margin-top: 15px;">
-          <p><strong>Diseño de Referencia:</strong></p>
-          <img id="det-imagen" class="preview-img" alt="Diseño de referencia agendado">
+        <div class="ticket-actions">
+          <button class="btn btn-danger" onclick="app.cancelBooking()">Cancelar Cita</button>
         </div>
       </div>
-      
-      <button id="btn-cancelar" class="btn btn-danger">Cancelar Cita</button>
-    </div>
-  </div>
+    </section>
+
+  </main>
 
   <script>
-    // Elementos del DOM
-    const formAgendar = document.getElementById('form-agendar');
-    const inputFecha = document.getElementById('fecha');
-    const selectServicio = document.getElementById('servicio');
-    const selectHorario = document.getElementById('horario');
-    const inputImagen = document.getElementById('imagen-referencia');
-    const previewBox = document.getElementById('preview-box');
-    const imgPreview = document.getElementById('img-preview');
-    const btnOmitirImagen = document.getElementById('btn-omitir-imagen');
+    class SpaApp {
+      constructor() {
+        this.currentStep = 1;
+        this.bookingData = {
+          servicio: null,
+          fecha: null,
+          horario: null,
+          imagen: null
+        };
 
-    const seccionFormulario = document.getElementById('seccion-formulario');
-    const seccionCita = document.getElementById('seccion-cita');
-    const btnCancelar = document.getElementById('btn-cancelar');
+        this.initDOM();
+        this.bindEvents();
+        this.checkExistingBooking();
+      }
 
-    const detServicio = document.getElementById('det-servicio');
-    const detFecha = document.getElementById('det-fecha');
-    const detHorario = document.getElementById('det-horario');
-    const detImagenBox = document.getElementById('det-imagen-box');
-    const detImagen = document.getElementById('det-imagen');
+      initDOM() {
+        this.steps = document.querySelectorAll('.section-step');
+        this.indicators = document.querySelectorAll('.step-indicator');
+        this.dateInput = document.getElementById('date-picker');
+        this.btnStep2Next = document.getElementById('btn-step-2-next');
 
-    let imagenBase64 = null;
+        // Deshabilitar días pasados en el calendario
+        const today = new Date().toISOString().split('T')[0];
+        this.dateInput.setAttribute('min', today);
+      }
 
-    // Deshabilitar fechas pasadas
-    const hoy = new Date().toISOString().split('T')[0];
-    inputFecha.setAttribute('min', hoy);
+      bindEvents() {
+        // Selección de Servicio (Sección 1)
+        document.querySelectorAll('.service-card').forEach(card => {
+          card.addEventListener('click', () => {
+            document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            this.bookingData.servicio = card.dataset.service;
+            this.nextStep();
+          });
+        });
 
-    // Cargar cita al abrir la página
-    document.addEventListener('DOMContentLoaded', cargarCita);
+        // Selección de Fecha (Sección 2)
+        this.dateInput.addEventListener('change', (e) => {
+          this.bookingData.fecha = e.target.value;
+          this.validateStep2();
+        });
 
-    // Previsualizar la imagen cuando se selecciona un archivo
-    inputImagen.addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      if (file) {
+        // Selección de Horarios en bloques de 4 horas
+        document.querySelectorAll('.slot-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            this.bookingData.horario = btn.dataset.time;
+            this.validateStep2();
+          });
+        });
+
+        // Subida de imagen (Sección 3)
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+
+        dropZone.addEventListener('click', (e) => {
+          if (e.target.id !== 'btn-remove-img') fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => this.handleFile(e.target.files[0]));
+
+        document.getElementById('btn-remove-img').addEventListener('click', (e) => {
+          e.stopPropagation();
+          this.clearImage();
+        });
+      }
+
+      validateStep2() {
+        this.btnStep2Next.disabled = !(this.bookingData.fecha && this.bookingData.horario);
+      }
+
+      handleFile(file) {
+        if (!file) return;
         const reader = new FileReader();
-        reader.onload = function(event) {
-          imagenBase64 = event.target.result;
-          imgPreview.src = imagenBase64;
-          previewBox.classList.remove('oculto');
+        reader.onload = (e) => {
+          this.bookingData.imagen = e.target.result;
+          document.getElementById('image-preview').src = this.bookingData.imagen;
+          document.getElementById('upload-prompt').classList.add('oculto');
+          document.getElementById('preview-wrapper').classList.remove('oculto');
         };
         reader.readAsDataURL(file);
-      } else {
-        imagenBase64 = null;
-        previewBox.classList.add('oculto');
-      }
-    });
-
-    // Evento al enviar formulario con o sin imagen
-    formAgendar.addEventListener('submit', function(e) {
-      e.preventDefault();
-      procesarAgendamiento();
-    });
-
-    // Botón para omitir imagen explícitamente y agendar
-    btnOmitirImagen.addEventListener('click', function() {
-      if (!formAgendar.checkValidity()) {
-        formAgendar.reportValidity();
-        return;
-      }
-      imagenBase64 = null; // Ignorar cualquier imagen elegida
-      procesarAgendamiento();
-    });
-
-    // Procesar y guardar cita
-    function procesarAgendamiento() {
-      const citaData = {
-        servicio: selectServicio.value,
-        fecha: inputFecha.value,
-        horario: selectHorario.value,
-        imagen: imagenBase64
-      };
-
-      try {
-        localStorage.setItem('cita_garritas', JSON.stringify(citaData));
-      } catch (err) {
-        console.warn('La imagen era demasiado grande para LocalStorage, se guardará sin imagen.');
-        citaData.imagen = null;
-        localStorage.setItem('cita_garritas', JSON.stringify(citaData));
       }
 
-      mostrarCita(citaData);
-      alert('¡Tu cita ha sido agendada con éxito!');
-    }
-
-    // Mostrar el Ticket
-    function mostrarCita(cita) {
-      detServicio.textContent = cita.servicio;
-      detFecha.textContent = cita.fecha;
-      detHorario.textContent = cita.horario;
-
-      if (cita.imagen) {
-        detImagen.src = cita.imagen;
-        detImagenBox.classList.remove('oculto');
-      } else {
-        detImagenBox.classList.add('oculto');
+      clearImage() {
+        this.bookingData.imagen = null;
+        document.getElementById('file-input').value = '';
+        document.getElementById('upload-prompt').classList.remove('oculto');
+        document.getElementById('preview-wrapper').classList.add('oculto');
       }
 
-      seccionFormulario.classList.add('oculto');
-      seccionCita.classList.remove('oculto');
-    }
-
-    // Cancelar la cita
-    btnCancelar.addEventListener('click', function() {
-      const confirmar = confirm('¿Estás segura de que deseas cancelar tu cita en Garritas Nails?');
-      if (confirmar) {
-        localStorage.removeItem('cita_garritas');
-        ocultarCita();
-        formAgendar.reset();
-        imagenBase64 = null;
-        previewBox.classList.add('oculto');
-        alert('Tu cita ha sido cancelada.');
+      skipImage() {
+        this.bookingData.imagen = null;
+        this.confirmBooking();
       }
-    });
 
-    // Volver al formulario
-    function ocultarCita() {
-      seccionCita.classList.add('oculto');
-      seccionFormulario.classList.remove('oculto');
-    }
+      confirmBooking() {
+        try {
+          localStorage.setItem('garritas_booking', JSON.stringify(this.bookingData));
+        } catch (e) {
+          console.warn('La imagen era muy grande para LocalStorage; guardado sin imagen.');
+          this.bookingData.imagen = null;
+          localStorage.setItem('garritas_booking', JSON.stringify(this.bookingData));
+        }
+        this.renderTicket();
+        this.goToStep(4);
+      }
 
-    // Cargar datos previos
-    function cargarCita() {
-      const citaGuardada = localStorage.getItem('cita_garritas');
-      if (citaGuardada) {
-        mostrarCita(JSON.parse(citaGuardada));
+      renderTicket() {
+        document.getElementById('ticket-service').textContent = this.bookingData.servicio;
+        document.getElementById('ticket-date').textContent = this.bookingData.fecha;
+        document.getElementById('ticket-time').textContent = this.bookingData.horario;
+
+        const imgContainer = document.getElementById('ticket-img-container');
+        if (this.bookingData.imagen) {
+          document.getElementById('ticket-image').src = this.bookingData.imagen;
+          imgContainer.classList.remove('oculto');
+        } else {
+          imgContainer.classList.add('oculto');
+        }
+      }
+
+      cancelBooking() {
+        if (confirm('¿Deseas cancelar tu cita agendada?')) {
+          localStorage.removeItem('garritas_booking');
+          this.bookingData = { servicio: null, fecha: null, horario: null, imagen: null };
+          this.clearImage();
+          document.querySelectorAll('.service-card, .slot-btn').forEach(el => el.classList.remove('selected'));
+          this.dateInput.value = '';
+          this.btnStep2Next.disabled = true;
+          this.goToStep(1);
+        }
+      }
+
+      checkExistingBooking() {
+        const saved = localStorage.getItem('garritas_booking');
+        if (saved) {
+          this.bookingData = JSON.parse(saved);
+          this.renderTicket();
+          this.goToStep(4);
+        }
+      }
+
+      nextStep() { if (this.currentStep < 4) this.goToStep(this.currentStep + 1); }
+      prevStep() { if (this.currentStep > 1) this.goToStep(this.currentStep - 1); }
+
+      goToStep(stepNumber) {
+        this.currentStep = stepNumber;
+        this.steps.forEach((step, index) => {
+          step.classList.toggle('active', index + 1 === stepNumber);
+        });
+        this.indicators.forEach((ind, index) => {
+          ind.classList.toggle('active', index + 1 === stepNumber);
+        });
       }
     }
+
+    // Inicialización del sistema
+    const app = new SpaApp();
   </script>
 </body>
 </html>
