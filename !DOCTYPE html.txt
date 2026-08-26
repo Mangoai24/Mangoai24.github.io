@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Garritas Nails por Ale 🐾</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --crema:#FAF7F2;
+    --crema-2:#F2EDE3;
+    --verde:#606C38;
+    --verde-oscuro:#283618;
+    --verde-suave:#89945F;
+    --blanco:#FFFFFF;
+    --plata:#C0C0C0;
+    --plata-claro:#E8E8E8;
+    --gris:#EFEFEF;
+    --texto:#333333;
+    --rojo:#B84A4A;
+    --amarillo:#C99A27;
+    --whatsapp:#25D366;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:'Quicksand',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 10% 10%,rgba(96,108,56,.07) 0 35px,transparent 36px),
+        radial-gradient(circle at 90% 85%,rgba(96,108,56,.06) 0 45px,transparent 46px),
+        var(--crema);
+    color:var(--texto);
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:680px;
+    margin:auto;
+    background:var(--blanco);
+    border:2px solid var(--verde);
+    border-radius:24px;
+    overflow:hidden;
+    box-shadow:0 12px 35px rgba(40,54,24,.12);
+}
+
+header{
+    background:var(--verde);
+    color:white;
+    text-align:center;
+    padding:27px 20px;
+    border-bottom:4px solid var(--plata);
+}
+
+.logo-paw{
+    font-size:2rem;
+    margin-bottom:8px;
+}
+
+header h1{
+    font-size:1.35rem;
+    line-height:1.35;
+}
+
+.subtitle{
+    margin-top:8px;
+    font-size:.82rem;
+    opacity:.80;
+}
+
+.step{
+    display:none;
+    padding:25px;
+}
+
+.step.active{
+    display:block;
+}
+
+h2{
+    color:var(--verde-oscuro);
+    font-size:1.18rem;
+    margin-bottom:17px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--verde);
+}
+
+.section-title{
+    color:var(--verde-oscuro);
+    font-weight:700;
+    margin:18px 0 10px;
+}
+
+.service-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.service-btn{
+    width:100%;
+    border:2px solid var(--verde);
+    background:var(--crema);
+    color:var(--texto);
+    border-radius:50px;
+    padding:14px 19px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    cursor:pointer;
+    font-size:.95rem;
+    font-weight:600;
+    transition:.3s;
+}
+
+.service-btn:hover{
+    transform:translateY(-1px);
+    box-shadow:0 4px 12px rgba(96,108,56,.15);
+}
+
+.service-btn.selected{
+    background:var(--verde);
+    color:white;
+    border-color:var(--verde-oscuro);
+}
+
+.service-left{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.price{
+    font-weight:700;
+    white-space:nowrap;
+}
+
+.info-box{
+    background:var(--crema-2);
+    border-left:4px solid var(--verde);
+    padding:12px 14px;
+    border-radius:10px;
+    margin:12px 0 18px;
+    font-size:.86rem;
+    line-height:1.45;
+}
+
+.shapes{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.shape{
+    border:2px solid var(--verde);
+    background:var(--crema);
+    border-radius:16px;
+    padding:13px 5px;
+    text-align:center;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.shape:hover{
+    box-shadow:0 4px 12px rgba(96,108,56,.15);
+}
+
+.shape.selected{
+    background:var(--verde);
+    color:white;
+}
+
+.nail{
+    width:49px;
+    height:67px;
+    margin:0 auto 7px;
+}
+
+.nail svg{
+    width:100%;
+    height:100%;
+    stroke:currentColor;
+    fill:none;
+    stroke-width:2.2;
+}
+
+.shape-name{
+    font-size:.78rem;
+    font-weight:700;
+}
+
+.extra-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:11px 4px;
+    border-bottom:1px solid var(--gris);
+    font-size:.9rem;
+}
+
+.extra-row:last-child{
+    border-bottom:none;
+}
+
+.number-control{
+    width:58px;
+    padding:7px;
+    border:1px solid var(--verde);
+    border-radius:9px;
+    text-align:center;
+    background:white;
+}
+
+.checkbox{
+    width:18px;
+    height:18px;
+    accent-color:var(--verde);
+}
+
+.total{
+    margin:22px 0 15px;
+    padding:17px;
+    background:var(--verde-oscuro);
+    color:white;
+    border-radius:15px;
+}
+
+/* Estilos de botones generales de cancelación */
+.btn-siguiente, .btn-whatsapp {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.btn-siguiente { background: var(--verde); color: white; }
+.btn-whatsapp { background: var(--whatsapp); color: white; }
+
+.btn-cancelar {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--rojo);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+.btn-cancelar:hover {
+    background-color: #9c3c3c;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="logo-paw">🐾</div>
+        <h1>Garritas Nails por Ale</h1>
+        <div class="subtitle">Reserva tu cita de forma rápida y sencilla</div>
+    </header>
+
+    <!-- PASO 1: Servicios -->
+    <div class="step active" id="step-1">
+        <h2>Elige tu servicio</h2>
+        <div class="service-list">
+            <button class="service-btn" onclick="seleccionarServicio('Manicure', 250)">
+                <span class="service-left">💅 Manicure Clásico</span>
+                <span class="price">$250</span>
+            </button>
+            <button class="service-btn" onclick="seleccionarServicio('Uñas Acrílicas', 450)">
+                <span class="service-left">✨ Set de Uñas Acrílicas</span>
+                <span class="price">$450</span>
+            </button>
+        </div>
+        <button class="btn-siguiente" onclick="irAlPaso(2)">Siguiente</button>
+    </div>
+
+    <!-- PASO 2: Resumen y Cancelación -->
+    <div class="step" id="step-2">
+        <h2>Resumen de tu Cita</h2>
+        <div class="info-box" id="resumenCita">
+            Cargando detalles de tu cita...
+        </div>
+
+        <div class="total" id="totalCita">
+            Total: $0
+        </div>
+
+        <!-- Botón para enviar por WhatsApp -->
+        <button class="btn-whatsapp" onclick="enviarWhatsApp()">Enviar cita por WhatsApp</button>
+        
+        <!-- NUEVO BOTÓN: Cancelar Cita -->
+        <button class="btn-cancelar" onclick="cancelarCita()">Cancelar / Borrar Cita</button>
+    </div>
+</div>
+
+<script>
+    let citaActual = {
+        servicio: '',
+        precio: 0
+    };
+
+    function seleccionarServicio(nombre, precio) {
+        citaActual.servicio = nombre;
+        citaActual.precio = precio;
+        
+        // Guardar de forma local por si recargan la página
+        localStorage.setItem('citaGarritas', JSON.stringify(citaActual));
+        
+        alert('Servicio seleccionado: ' + nombre);
+    }
+
+    function irAlPaso(paso) {
+        if(paso === 2 && !citaActual.servicio) {
+            alert('Por favor selecciona un servicio primero.');
+            return;
+        }
+
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        document.getElementById('step-' + paso).classList.add('active');
+
+        if(paso === 2) {
+            actualizarResumen();
+        }
+    }
+
+    function actualizarResumen() {
+        const resumenBox = document.getElementById('resumenCita');
+        const totalBox = document.getElementById('totalCita');
+
+        resumenBox.innerHTML = `<strong>Servicio:</strong> ${citaActual.servicio}`;
+        totalBox.innerHTML = `Total: $${citaActual.precio}`;
+    }
+
+    // NUEVA FUNCIÓN: Cancelar Cita
+    function cancelarCita() {
+        if (confirm('¿Estás segura de que deseas cancelar y borrar esta cita?')) {
+            // Limpiar datos guardados
+            localStorage.removeItem('citaGarritas');
+            citaActual = { servicio: '', precio: 0 };
+            
+            alert('La cita ha sido cancelada.');
+            
+            // Regresar al paso inicial
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step-1').classList.add('active');
+        }
+    }
+
+    function enviarWhatsApp() {
+        const mensaje = `Hola Ale, quiero agendar una cita para: ${citaActual.servicio} por un total de $${citaActual.precio}.`;
+        const url = `https://api.whatsapp.com/send?phone=TU_NUMERO_AQUI&text=${encodeURIComponent(mensaje)}`;
+        window.open(url, '_blank');
+    }
+
+    // Revisar si ya había una cita guardada al cargar la página
+    window.onload = function() {
+        const guardada = localStorage.getItem('citaGarritas');
+        if(guardada) {
+            citaActual = JSON.parse(guardada);
+        }
+    }
+</script>
+
+</body>
+</html>
