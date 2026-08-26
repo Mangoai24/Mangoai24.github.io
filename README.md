@@ -74,7 +74,7 @@ header h1{
 .subtitle{
     margin-top:8px;
     font-size:.82rem;
-    opacity:.80;
+    opacity:.9;
 }
 
 .step{
@@ -119,7 +119,7 @@ h2{
     cursor:pointer;
     font-size:.95rem;
     font-weight:600;
-    transition:.3s;
+    transition:.2s;
 }
 
 .service-btn:hover{
@@ -181,8 +181,8 @@ h2{
 }
 
 .nail{
-    width:49px;
-    height:67px;
+    width:42px;
+    height:60px;
     margin:0 auto 7px;
 }
 
@@ -234,151 +234,3 @@ h2{
     background:var(--verde-oscuro);
     color:white;
     border-radius:15px;
-}
-
-/* Estilos de botones generales de cancelación */
-.btn-siguiente, .btn-whatsapp {
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 50px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 10px;
-}
-.btn-siguiente { background: var(--verde); color: white; }
-.btn-whatsapp { background: var(--whatsapp); color: white; }
-
-.btn-cancelar {
-    width: 100%;
-    padding: 12px;
-    background-color: var(--rojo);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    font-size: 0.95rem;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: 0.3s;
-}
-.btn-cancelar:hover {
-    background-color: #9c3c3c;
-}
-</style>
-</head>
-<body>
-
-<div class="container">
-    <header>
-        <div class="logo-paw">🐾</div>
-        <h1>Garritas Nails por Ale</h1>
-        <div class="subtitle">Reserva tu cita de forma rápida y sencilla</div>
-    </header>
-
-    <!-- PASO 1: Servicios -->
-    <div class="step active" id="step-1">
-        <h2>Elige tu servicio</h2>
-        <div class="service-list">
-            <button class="service-btn" onclick="seleccionarServicio('Manicure', 250)">
-                <span class="service-left">💅 Manicure Clásico</span>
-                <span class="price">$250</span>
-            </button>
-            <button class="service-btn" onclick="seleccionarServicio('Uñas Acrílicas', 450)">
-                <span class="service-left">✨ Set de Uñas Acrílicas</span>
-                <span class="price">$450</span>
-            </button>
-        </div>
-        <button class="btn-siguiente" onclick="irAlPaso(2)">Siguiente</button>
-    </div>
-
-    <!-- PASO 2: Resumen y Cancelación -->
-    <div class="step" id="step-2">
-        <h2>Resumen de tu Cita</h2>
-        <div class="info-box" id="resumenCita">
-            Cargando detalles de tu cita...
-        </div>
-
-        <div class="total" id="totalCita">
-            Total: $0
-        </div>
-
-        <!-- Botón para enviar por WhatsApp -->
-        <button class="btn-whatsapp" onclick="enviarWhatsApp()">Enviar cita por WhatsApp</button>
-        
-        <!-- NUEVO BOTÓN: Cancelar Cita -->
-        <button class="btn-cancelar" onclick="cancelarCita()">Cancelar / Borrar Cita</button>
-    </div>
-</div>
-
-<script>
-    let citaActual = {
-        servicio: '',
-        precio: 0
-    };
-
-    function seleccionarServicio(nombre, precio) {
-        citaActual.servicio = nombre;
-        citaActual.precio = precio;
-        
-        // Guardar de forma local por si recargan la página
-        localStorage.setItem('citaGarritas', JSON.stringify(citaActual));
-        
-        alert('Servicio seleccionado: ' + nombre);
-    }
-
-    function irAlPaso(paso) {
-        if(paso === 2 && !citaActual.servicio) {
-            alert('Por favor selecciona un servicio primero.');
-            return;
-        }
-
-        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-        document.getElementById('step-' + paso).classList.add('active');
-
-        if(paso === 2) {
-            actualizarResumen();
-        }
-    }
-
-    function actualizarResumen() {
-        const resumenBox = document.getElementById('resumenCita');
-        const totalBox = document.getElementById('totalCita');
-
-        resumenBox.innerHTML = `<strong>Servicio:</strong> ${citaActual.servicio}`;
-        totalBox.innerHTML = `Total: $${citaActual.precio}`;
-    }
-
-    // NUEVA FUNCIÓN: Cancelar Cita
-    function cancelarCita() {
-        if (confirm('¿Estás segura de que deseas cancelar y borrar esta cita?')) {
-            // Limpiar datos guardados
-            localStorage.removeItem('citaGarritas');
-            citaActual = { servicio: '', precio: 0 };
-            
-            alert('La cita ha sido cancelada.');
-            
-            // Regresar al paso inicial
-            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            document.getElementById('step-1').classList.add('active');
-        }
-    }
-
-    function enviarWhatsApp() {
-        const mensaje = `Hola Ale, quiero agendar una cita para: ${citaActual.servicio} por un total de $${citaActual.precio}.`;
-        const url = `https://api.whatsapp.com/send?phone=TU_NUMERO_AQUI&text=${encodeURIComponent(mensaje)}`;
-        window.open(url, '_blank');
-    }
-
-    // Revisar si ya había una cita guardada al cargar la página
-    window.onload = function() {
-        const guardada = localStorage.getItem('citaGarritas');
-        if(guardada) {
-            citaActual = JSON.parse(guardada);
-        }
-    }
-</script>
-
-</body>
-</html>
