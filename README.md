@@ -6,11 +6,11 @@
   <title>Garritas Nails - Agendamiento de Citas</title>
   <style>
     :root {
-      /* Nueva paleta de colores verdes */
-      --green-dark: #1b4332;       /* Verde oscuro para encabezados y bordes de acento */
-      --green-light: #d8f3dc;      /* Verde claro para el fondo general */
-      --green-pastel: #40916c;     /* Verde pastel oscuro para texto de alto contraste */
-      --green-pastel-light: #74c69d; /* Verde pastel suave para detalles */
+      /* Paleta de colores verdes */
+      --green-dark: #1b4332;       /* Verde oscuro para encabezados y botones principales */
+      --green-light: #d8f3dc;      /* Verde claro para fondo general */
+      --green-pastel: #40916c;     /* Verde pastel oscuro para texto */
+      --green-pastel-light: #74c69d; /* Verde pastel suave para bordes/detalles */
       --card-bg: #ffffff;
     }
 
@@ -65,7 +65,7 @@
       color: var(--green-pastel);
     }
 
-    select, input[type="date"] {
+    select, input[type="date"], input[type="file"] {
       width: 100%;
       padding: 12px;
       border: 2px solid var(--green-pastel-light);
@@ -77,8 +77,27 @@
       transition: border-color 0.3s;
     }
 
-    select:focus, input[type="date"]:focus {
+    select:focus, input[type="date"]:focus, input[type="file"]:focus {
       border-color: var(--green-dark);
+    }
+
+    .preview-container {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .preview-img {
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 8px;
+      border: 2px solid var(--green-pastel-light);
+      object-fit: cover;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
     }
 
     .btn {
@@ -101,32 +120,46 @@
       background-color: var(--green-pastel);
     }
 
+    .btn-secondary {
+      background-color: var(--green-pastel-light);
+      color: var(--green-dark);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--green-pastel);
+      color: white;
+    }
+
     .btn-danger {
       background-color: #d90429;
       color: white;
-      margin-top: 10px;
+      margin-top: 15px;
     }
 
     .btn-danger:hover {
       background-color: #a80320;
     }
 
+    /* Estilos del Ticket */
     .cita-card {
       background-color: var(--green-light);
       border: 2px dashed var(--green-pastel);
-      border-radius: 8px;
-      padding: 16px;
+      border-radius: 12px;
+      padding: 20px;
       margin-top: 20px;
     }
 
     .cita-card h3 {
       color: var(--green-dark);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      text-align: center;
+      border-bottom: 1px solid var(--green-pastel-light);
+      padding-bottom: 8px;
     }
 
     .cita-detalles p {
-      margin-bottom: 6px;
-      font-size: 0.95rem;
+      margin-bottom: 8px;
+      font-size: 1rem;
       color: var(--green-pastel);
     }
 
@@ -147,7 +180,7 @@
       <p>Reserva tu cita para Soft Gel o PressOn</p>
     </header>
 
-    <!-- Sección del Formulario de Agendamiento -->
+    <!-- Formulario Principal -->
     <div id="seccion-formulario">
       <form id="form-agendar">
         <div class="form-group">
@@ -174,30 +207,54 @@
           </select>
         </div>
 
-        <button type="submit" class="btn btn-primary">Confirmar y Agendar Cita</button>
+        <!-- Opción de Imagen de Referencia -->
+        <div class="form-group">
+          <label for="imagen-referencia">Imagen de Referencia (Opcional):</label>
+          <input type="file" id="imagen-referencia" accept="image/*">
+          <div id="preview-box" class="preview-container oculto">
+            <img id="img-preview" class="preview-img" alt="Vista previa de diseño">
+          </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="btn-group">
+          <button type="button" id="btn-omitir-imagen" class="btn btn-secondary">Omitir imagen y Agendar</button>
+          <button type="submit" class="btn btn-primary">Agendar Cita</button>
+        </div>
       </form>
     </div>
 
-    <!-- Sección de Visualización y Cancelación de Cita -->
+    <!-- Ticket de Cita Confirmada -->
     <div id="seccion-cita" class="cita-card oculto">
-      <h3>📅 Tu Cita Agendada</h3>
+      <h3>🎟️ Ticket de Cita Confirmada</h3>
       <div class="cita-detalles">
         <p><strong>Servicio:</strong> <span id="det-servicio"></span></p>
         <p><strong>Fecha:</strong> <span id="det-fecha"></span></p>
         <p><strong>Horario:</strong> <span id="det-horario"></span></p>
         <p><strong>Estado:</strong> <span style="color: var(--green-dark); font-weight: bold;">Confirmada</span></p>
+        
+        <!-- Imagen en el Ticket si el usuario la agregó -->
+        <div id="det-imagen-box" class="preview-container oculto" style="margin-top: 15px;">
+          <p><strong>Diseño de Referencia:</strong></p>
+          <img id="det-imagen" class="preview-img" alt="Diseño de referencia agendado">
+        </div>
       </div>
+      
       <button id="btn-cancelar" class="btn btn-danger">Cancelar Cita</button>
     </div>
   </div>
 
   <script>
-    // Referencias a elementos del DOM
+    // Elementos del DOM
     const formAgendar = document.getElementById('form-agendar');
     const inputFecha = document.getElementById('fecha');
     const selectServicio = document.getElementById('servicio');
     const selectHorario = document.getElementById('horario');
-    
+    const inputImagen = document.getElementById('imagen-referencia');
+    const previewBox = document.getElementById('preview-box');
+    const imgPreview = document.getElementById('img-preview');
+    const btnOmitirImagen = document.getElementById('btn-omitir-imagen');
+
     const seccionFormulario = document.getElementById('seccion-formulario');
     const seccionCita = document.getElementById('seccion-cita');
     const btnCancelar = document.getElementById('btn-cancelar');
@@ -205,59 +262,109 @@
     const detServicio = document.getElementById('det-servicio');
     const detFecha = document.getElementById('det-fecha');
     const detHorario = document.getElementById('det-horario');
+    const detImagenBox = document.getElementById('det-imagen-box');
+    const detImagen = document.getElementById('det-imagen');
 
-    // Deshabilitar fechas pasadas en el input date
+    let imagenBase64 = null;
+
+    // Deshabilitar fechas pasadas
     const hoy = new Date().toISOString().split('T')[0];
     inputFecha.setAttribute('min', hoy);
 
-    // Cargar cita al iniciar la página desde LocalStorage
+    // Cargar cita al abrir la página
     document.addEventListener('DOMContentLoaded', cargarCita);
 
-    // Evento de submit del formulario
+    // Previsualizar la imagen cuando se selecciona un archivo
+    inputImagen.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          imagenBase64 = event.target.result;
+          imgPreview.src = imagenBase64;
+          previewBox.classList.remove('oculto');
+        };
+        reader.readAsDataURL(file);
+      } else {
+        imagenBase64 = null;
+        previewBox.classList.add('oculto');
+      }
+    });
+
+    // Evento al enviar formulario con o sin imagen
     formAgendar.addEventListener('submit', function(e) {
       e.preventDefault();
+      procesarAgendamiento();
+    });
 
+    // Botón para omitir imagen explícitamente y agendar
+    btnOmitirImagen.addEventListener('click', function() {
+      if (!formAgendar.checkValidity()) {
+        formAgendar.reportValidity();
+        return;
+      }
+      imagenBase64 = null; // Ignorar cualquier imagen elegida
+      procesarAgendamiento();
+    });
+
+    // Procesar y guardar cita
+    function procesarAgendamiento() {
       const citaData = {
         servicio: selectServicio.value,
         fecha: inputFecha.value,
-        horario: selectHorario.value
+        horario: selectHorario.value,
+        imagen: imagenBase64
       };
 
-      // Guardar en almacenamiento local
-      localStorage.setItem('cita_garritas', JSON.stringify(citaData));
-      
+      try {
+        localStorage.setItem('cita_garritas', JSON.stringify(citaData));
+      } catch (err) {
+        console.warn('La imagen era demasiado grande para LocalStorage, se guardará sin imagen.');
+        citaData.imagen = null;
+        localStorage.setItem('cita_garritas', JSON.stringify(citaData));
+      }
+
       mostrarCita(citaData);
       alert('¡Tu cita ha sido agendada con éxito!');
-    });
+    }
 
-    // Evento para cancelar la cita
+    // Mostrar el Ticket
+    function mostrarCita(cita) {
+      detServicio.textContent = cita.servicio;
+      detFecha.textContent = cita.fecha;
+      detHorario.textContent = cita.horario;
+
+      if (cita.imagen) {
+        detImagen.src = cita.imagen;
+        detImagenBox.classList.remove('oculto');
+      } else {
+        detImagenBox.classList.add('oculto');
+      }
+
+      seccionFormulario.classList.add('oculto');
+      seccionCita.classList.remove('oculto');
+    }
+
+    // Cancelar la cita
     btnCancelar.addEventListener('click', function() {
       const confirmar = confirm('¿Estás segura de que deseas cancelar tu cita en Garritas Nails?');
       if (confirmar) {
         localStorage.removeItem('cita_garritas');
         ocultarCita();
         formAgendar.reset();
+        imagenBase64 = null;
+        previewBox.classList.add('oculto');
         alert('Tu cita ha sido cancelada.');
       }
     });
 
-    // Función para mostrar los detalles de la cita
-    function mostrarCita(cita) {
-      detServicio.textContent = cita.servicio;
-      detFecha.textContent = cita.fecha;
-      detHorario.textContent = cita.horario;
-
-      seccionFormulario.classList.add('oculto');
-      seccionCita.classList.remove('oculto');
-    }
-
-    // Función para ocultar la cita y mostrar el formulario
+    // Volver al formulario
     function ocultarCita() {
       seccionCita.classList.add('oculto');
       seccionFormulario.classList.remove('oculto');
     }
 
-    // Función para revisar si existe una cita agendada previamente
+    // Cargar datos previos
     function cargarCita() {
       const citaGuardada = localStorage.getItem('cita_garritas');
       if (citaGuardada) {
