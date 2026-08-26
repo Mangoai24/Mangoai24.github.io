@@ -6,10 +6,11 @@
   <title>Garritas Nails - Agendamiento de Citas</title>
   <style>
     :root {
-      --green-primary: #ff85a2;
-      --pink-dark: #e05275;
-      --green-light: #fff0f3;
-      --text-color: #4a4a4a;
+      /* Nueva paleta de colores verdes */
+      --green-dark: #1b4332;       /* Verde oscuro para encabezados y bordes de acento */
+      --green-light: #d8f3dc;      /* Verde claro para el fondo general */
+      --green-pastel: #40916c;     /* Verde pastel oscuro para texto de alto contraste */
+      --green-pastel-light: #74c69d; /* Verde pastel suave para detalles */
       --card-bg: #ffffff;
     }
 
@@ -21,8 +22,8 @@
     }
 
     body {
-      background-color: var(--pink-light);
-      color: var(--text-color);
+      background-color: var(--green-light);
+      color: var(--green-pastel);
       display: flex;
       justify-content: center;
       padding: 20px;
@@ -33,8 +34,9 @@
       max-width: 600px;
       background: var(--card-bg);
       border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      box-shadow: 0 8px 24px rgba(27, 67, 50, 0.12);
       padding: 24px;
+      border: 1px solid var(--green-pastel-light);
     }
 
     header {
@@ -43,12 +45,12 @@
     }
 
     header h1 {
-      color: var(--pink-dark);
+      color: var(--green-dark);
       font-size: 1.8rem;
     }
 
     header p {
-      color: #777;
+      color: var(--green-pastel);
       font-size: 0.95rem;
     }
 
@@ -60,20 +62,23 @@
       display: block;
       font-weight: 600;
       margin-bottom: 8px;
+      color: var(--green-pastel);
     }
 
     select, input[type="date"] {
       width: 100%;
       padding: 12px;
-      border: 2px solid #eee;
+      border: 2px solid var(--green-pastel-light);
       border-radius: 8px;
       font-size: 1rem;
       outline: none;
+      color: var(--green-dark);
+      background-color: #fbfffb;
       transition: border-color 0.3s;
     }
 
     select:focus, input[type="date"]:focus {
-      border-color: var(--pink-primary);
+      border-color: var(--green-dark);
     }
 
     .btn {
@@ -88,40 +93,45 @@
     }
 
     .btn-primary {
-      background-color: var(--pink-primary);
-      color: white;
+      background-color: var(--green-dark);
+      color: #ffffff;
     }
 
     .btn-primary:hover {
-      background-color: var(--pink-dark);
+      background-color: var(--green-pastel);
     }
 
     .btn-danger {
-      background-color: #ff4d4d;
+      background-color: #d90429;
       color: white;
       margin-top: 10px;
     }
 
     .btn-danger:hover {
-      background-color: #cc0000;
+      background-color: #a80320;
     }
 
     .cita-card {
-      background-color: var(--pink-light);
-      border: 2px dashed var(--pink-primary);
+      background-color: var(--green-light);
+      border: 2px dashed var(--green-pastel);
       border-radius: 8px;
       padding: 16px;
       margin-top: 20px;
     }
 
     .cita-card h3 {
-      color: var(--pink-dark);
+      color: var(--green-dark);
       margin-bottom: 10px;
     }
 
     .cita-detalles p {
       margin-bottom: 6px;
       font-size: 0.95rem;
+      color: var(--green-pastel);
+    }
+
+    .cita-detalles strong {
+      color: var(--green-dark);
     }
 
     .oculto {
@@ -133,10 +143,11 @@
 
   <div class="container">
     <header>
-      <h1>🐾Garritas Nails</h1>
-      <p>Reserva tu cita</p>
+      <h1>💅 Garritas Nails</h1>
+      <p>Reserva tu cita para Soft Gel o PressOn</p>
     </header>
 
+    <!-- Sección del Formulario de Agendamiento -->
     <div id="seccion-formulario">
       <form id="form-agendar">
         <div class="form-group">
@@ -167,13 +178,14 @@
       </form>
     </div>
 
+    <!-- Sección de Visualización y Cancelación de Cita -->
     <div id="seccion-cita" class="cita-card oculto">
       <h3>📅 Tu Cita Agendada</h3>
       <div class="cita-detalles">
         <p><strong>Servicio:</strong> <span id="det-servicio"></span></p>
         <p><strong>Fecha:</strong> <span id="det-fecha"></span></p>
         <p><strong>Horario:</strong> <span id="det-horario"></span></p>
-        <p><strong>Estado:</strong> <span style="color: green; font-weight: bold;">Confirmada</span></p>
+        <p><strong>Estado:</strong> <span style="color: var(--green-dark); font-weight: bold;">Confirmada</span></p>
       </div>
       <button id="btn-cancelar" class="btn btn-danger">Cancelar Cita</button>
     </div>
