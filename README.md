@@ -133,7 +133,7 @@
 
   <div class="container">
     <header>
-      <h1>💅 Garritas Nails</h1>
+      <h1>🐾 Garritas Nails</h1>
       <p>Reserva tu cita para Soft Gel o PressOn</p>
     </header>
 
